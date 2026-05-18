@@ -11,15 +11,15 @@
 需要 Python 3.8+。
 
 ```sh
-git clone https://github.com/dingdugan/claude-usage-stat.git
-cd claude-usage-stat
+git clone https://github.com/dingdugan/claude.usage.stat.git
+cd claude.usage.stat
 ./install.sh
 ```
 
 或者用 pipx:
 
 ```sh
-pipx install git+https://github.com/dingdugan/claude-usage-stat.git
+pipx install git+https://github.com/dingdugan/claude.usage.stat.git
 ```
 
 ## 使用

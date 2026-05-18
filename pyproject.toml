@@ -19,8 +19,8 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/dingdugan/claude-usage-stat"
-Issues = "https://github.com/dingdugan/claude-usage-stat/issues"
+Homepage = "https://github.com/dingdugan/claude.usage.stat"
+Issues = "https://github.com/dingdugan/claude.usage.stat/issues"
 
 [project.scripts]
 claude-usage-stat = "claude_usage_stat.cli:main"
