@@ -40,14 +40,14 @@ Claude Code 会定期清理 `~/.claude/projects` 里大约 30 天前的 session 
 
 ```sh
 claude-usage-stat archive          # 手动跑一次归档(report/html 也会自动跑)
-claude-usage-stat schedule install # macOS:装一个每天 03:00 自动跑的 launchd 任务
+claude-usage-stat schedule install # macOS:装 launchd 任务(登录时 + 每 6 小时跑一次)
 claude-usage-stat schedule status  # 查看定时任务状态
 claude-usage-stat schedule uninstall
 ```
 
-Linux 用 cron,`crontab -e` 加一行:
+Linux 用 cron,`crontab -e` 加一行(每 6 小时跑一次):
 ```
-0 3 * * *  $(which claude-usage-stat) archive --quiet
+0 */6 * * *  $(which claude-usage-stat) archive --quiet
 ```
 
 ## License

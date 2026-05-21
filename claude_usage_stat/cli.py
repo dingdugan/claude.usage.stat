@@ -144,6 +144,10 @@ def _cmd_schedule(args) -> int:
             or os.path.expanduser("~/.local/bin/claude-usage-stat")
         )
         os.makedirs(os.path.dirname(LAUNCHD_LOG), exist_ok=True)
+        # 触发策略:
+        #   RunAtLoad = true   登录时跑一次(笔记本早上开盖就归档)
+        #   StartInterval 6h   机器醒着每 6 小时跑一次;睡眠时跳过,唤醒后会补跑一次
+        # 这两个一起覆盖了"机器关机/睡眠时错过定时"的洞。
         plist = (
             '<?xml version="1.0" encoding="UTF-8"?>\n'
             '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" '
@@ -153,13 +157,10 @@ def _cmd_schedule(args) -> int:
             '  <key>ProgramArguments</key><array>\n'
             f'    <string>{launcher}</string><string>archive</string><string>--quiet</string>\n'
             '  </array>\n'
-            '  <key>StartCalendarInterval</key><dict>\n'
-            '    <key>Hour</key><integer>3</integer>\n'
-            '    <key>Minute</key><integer>0</integer>\n'
-            '  </dict>\n'
+            '  <key>RunAtLoad</key><true/>\n'
+            '  <key>StartInterval</key><integer>21600</integer>\n'
             f'  <key>StandardOutPath</key><string>{LAUNCHD_LOG}</string>\n'
             f'  <key>StandardErrorPath</key><string>{LAUNCHD_LOG}</string>\n'
-            '  <key>RunAtLoad</key><false/>\n'
             '</dict></plist>\n'
         )
         os.makedirs(os.path.dirname(LAUNCHD_PLIST), exist_ok=True)
@@ -171,7 +172,7 @@ def _cmd_schedule(args) -> int:
         if r.returncode != 0:
             print("⚠ launchctl load 失败,plist 已写入但未加载。", file=sys.stderr)
             return 1
-        print("✓ 已安装定时任务:每天 03:00 自动 archive")
+        print("✓ 已安装定时任务:登录时 + 每 6 小时自动 archive(覆盖关机/睡眠)")
         print(f"  plist:  {LAUNCHD_PLIST}")
         print(f"  log:    {LAUNCHD_LOG}")
         print(f"  查看状态:  claude-usage-stat schedule status")
