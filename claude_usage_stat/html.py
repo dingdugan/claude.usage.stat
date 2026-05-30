@@ -166,12 +166,13 @@ function render(){
 
   document.getElementById('cards').innerHTML = [
     ['总 Token', fmt(TOTAL)],
+    ['净 Token', fmt(I+O+CW), '输入+输出+缓存写,不含缓存读(对齐 Claude Code 界面)'],
     ['花费(估)', usd(COST)],
     ['活跃天数', nDays+' <small>天</small>'],
     ['日均 Token', fmt(Math.round(TOTAL/nDays))],
     ['项目数', Object.keys(byProj).length],
     ['Session 数', Object.keys(bySess).length],
-  ].map(([k,v])=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+  ].map(([k,v,t])=>`<div class="card"${t?` title="${t}"`:''}><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
 
   const seg=[['#3b6fe0',I,'输入'],['#e0913b',O,'输出'],['#3ba55c',CR,'缓存读'],['#8b5cf6',CW,'缓存写']];
   document.getElementById('bd').innerHTML = TOTAL? seg.map(([c,v])=>{

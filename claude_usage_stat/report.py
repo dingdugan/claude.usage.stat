@@ -132,6 +132,7 @@ def render(sessions, daily, *, d_from, d_to, top, use_color, monthly_budget=None
     # 概览
     cells = [
         ("总 Token", fmt(TOTAL)),
+        ("净 Token", fmt(I + O + CW)),
         ("花费(估)", usd(COST)),
         ("日均 Token", fmt(round(TOTAL / max(1, n_days)))),
         ("项目数", str(len(by_proj))),
@@ -141,6 +142,7 @@ def render(sessions, daily, *, d_from, d_to, top, use_color, monthly_budget=None
     off = len(c(BOLD, "")) if _USE_COLOR else 0
     out.append("".join(pad("  " + k, cw) for k, _ in cells))
     out.append("".join(pad("  " + c(BOLD, v), cw + off) for _, v in cells))
+    out.append(c(DIM, "  净 Token = 输入+输出+缓存写,不含缓存读(对齐 Claude Code 界面)"))
     out.append("")
 
     # Token 构成
